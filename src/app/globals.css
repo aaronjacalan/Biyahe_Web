@@ -1,26 +1,127 @@
 @import "tailwindcss";
+@import "./map.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --accent-strong: #1f2720;
+  --accent: #708460;
+  --accent-soft: #dce4d0;
+  --background: #f6f0e3;
+  --foreground: #1f2720;
+  --muted: #62695e;
+  --border: #d8cfbf;
 }
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
-
 body {
+  margin: 0;
+  overflow: hidden;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+.portfolio-shell {
+  --sidebar-width: 96px;
+  --shell-gap: 8px;
+  --shell-padding: 8px;
+  --map-offset: calc(
+    var(--shell-padding) +
+    var(--sidebar-width) +
+    var(--shell-gap)
+  );
+  display: flex;
+  gap: var(--shell-gap);
+  height: 100dvh;
+  padding: var(--shell-padding);
+  background: var(--accent-strong);
+}
+.portfolio-sidebar {
+  display: flex;
+  flex: 0 0 var(--sidebar-width);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.portfolio-sidebar a {
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  border: 2px solid rgb(255 255 255 / 8%);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 5%);
+  color: rgb(255 255 255 / 40%);
+  cursor: pointer;
+  transition:
+    background-color 300ms,
+    border-color 300ms,
+    color 300ms;
+}
+.portfolio-sidebar a:hover {
+  border-color: rgb(255 255 255 / 20%);
+  background: rgb(255 255 255 / 10%);
+  color: rgb(255 255 255 / 70%);
+}
+.portfolio-sidebar a[aria-current="page"] {
+  border-color: rgb(255 255 255 / 40%);
+  background: rgb(255 255 255 / 15%);
+  color: white;
+}
+.portfolio-main {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 25px;
+  background: var(--background);
+  box-shadow: 0 24px 80px -35px rgb(0 0 0 / 55%);
+}
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--accent-soft);
+  outline-offset: 3px;
+}
+.portfolio-main:focus {
+  outline: none;
+}
+.skip-link {
+  position: fixed;
+  top: 16px;
+  left: var(--map-offset);
+  z-index: 30;
+  transform: translateY(-170%);
+  border-radius: 6px;
+  padding: 12px 18px;
+  background: var(--accent-strong);
+  color: white;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+@media (max-width: 767px) {
+  .portfolio-shell {
+    --shell-gap: 4px;
+    --shell-padding: 4px;
+  }
+  .portfolio-sidebar a {
+    width: 60px;
+    height: 60px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-shell * {
+    scroll-behavior: auto;
+    transition: none;
+  }
 }
